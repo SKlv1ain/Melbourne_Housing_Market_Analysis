@@ -31,24 +31,24 @@ class MelbourneHousingView:
     
     def init_menu_components(self):
         self.import_button = tk.Button(self.menu_frame, text="Import Data")
-        self.import_button.pack(pady=10)
+        self.import_button.pack(fill=tk.BOTH, expand=True, pady=10)
 
         self.stats_button = tk.Button(self.menu_frame, text="Descriptive Statistics")
-        self.stats_button.pack(pady=10)
+        self.stats_button.pack(fill=tk.BOTH, expand=True, pady=10)
 
         self.visualization_button = tk.Button(self.menu_frame, text="Data Visualization")
-        self.visualization_button.pack(pady=10)
+        self.visualization_button.pack(fill=tk.BOTH, expand=True, pady=10)
 
         self.predict_button = tk.Button(self.menu_frame, text="Price Prediction")
-        self.predict_button.pack(pady=10)
+        self.predict_button.pack(fill=tk.BOTH, expand=True, pady=10)
         
 
         self.compare_button = tk.Button(self.menu_frame, text="Compare Houses")
-        self.compare_button.pack(pady=10)
+        self.compare_button.pack(fill=tk.BOTH, expand=True, pady=10)
 
 
         self.quit_button = ttk.Button(self.menu_frame, text="Quit")
-        self.quit_button.pack(pady=10)
+        self.quit_button.pack(fill=tk.BOTH, expand=True, pady=10)
 
         self.compare_button.bind("<Button-1>", self.compare_houses_event)
         
