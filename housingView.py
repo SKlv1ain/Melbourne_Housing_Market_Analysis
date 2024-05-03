@@ -18,6 +18,14 @@ class MelbourneHousingView:
         self.display_frame = ttk.LabelFrame(self.main_frame, text="Display...")
         self.display_frame.pack(side=tk.RIGHT, fill=tk.BOTH, expand=True)
         
+        # Create a frame for displaying on the right side of the display frame
+        self.display_frame_right = ttk.LabelFrame(self.display_frame, text="Showing")
+        self.display_frame_right.pack(side=tk.RIGHT, fill=tk.BOTH, expand=True)
+        
+        # Create a frame for displaying on the left side of the display frame
+        self.display_frame_left = ttk.LabelFrame(self.display_frame, text="Selecteing")
+        self.display_frame_left.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
+        
         self.init_menu_components()
         self.init_display_components()
     
@@ -47,15 +55,6 @@ class MelbourneHousingView:
     def init_display_components(self):
         self.house_listbox = tk.Listbox(self.menu_frame, selectmode=tk.MULTIPLE)
         self.house_listbox.pack(pady=10)
-        
-    # def create_descriptive_listbox(self, data):
-    #     self.descriptive_listbox = tk.Listbox(self.display_frame)
-    #     self.descriptive_listbox.grid(row=0, column=0)
-        
-    #     for column_name, stat in data.items():
-    #         self.descriptive_listbox.insert(tk.END, column_name)
-            
-    #     self.descriptive_listbox.bind("<<ListboxSelect>>", self.on_select)
         
     
     def set_house_data(self, data):

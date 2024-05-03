@@ -28,40 +28,46 @@ class MelbourneHousingController:
             label = tk.Label(self.view.menu_frame, text="Data imported", fg="green", bg="white")
             label.pack(pady=10)
             self.view.set_house_data(self.model.get_housing_data())
-
+            
     def show_statistics(self):
-        # data_summary = self.model.get_data_summary()
-        # if data_summary is not None:
-        #     statistics_window = tk.Toplevel(self.master)
-        #     statistics_window.title("Descriptive Statistics")
-        #     text = tk.Text(statistics_window)
-        #     text.insert(tk.END, data_summary)
-        #     text.pack()
-        
         summary = self.model.get_data_summary()
         if summary is not None:
-            # listbox = tk.Listbox(self.view.display_frame)
-            # for column_name, stats in summary.items():
-            #     listbox.insert(tk.END, column_name)
-            # listbox.grid(row=0, column=0)
-            # listbox.delete(0, tk.END)
-            # for column, stat in summary.items():
-            #     listbox.insert(tk.END, column)
-                
-            # statistics_window = tk.Toplevel(self.master)
-            # statistics_window.title("Descriptive Statistics")
-            
-            row_index = 0
-            for column_name, stats in summary.items():
-                label = tk.Label(self.view.display_frame, text=column_name)
-                label.grid(row=row_index, column=0, padx=5, pady=5)
-                
-                stats_text = "\n".join([f"{stat}: {value}" for stat, value in stats.items()])
-                stats_label = tk.Label(self.view.display_frame, text=stats_text)
-                stats_label.grid(row=row_index, column=1, padx=5, pady=5)
-                
-                row_index += 1
+            # Clear the display frame
+            # self.clear_display_frame()
+            for widget in self.view.display_frame_left.winfo_children():
+                widget.destroy()
 
+            # Create the listbox for column names
+            self.column_listbox = tk.Listbox(self.view.display_frame_left)
+            self.column_listbox.grid(row=0, column=0, pady=20)
+            for column_name in summary.columns:
+                self.column_listbox.insert(tk.END, column_name)
+
+            # Bind the selection event to show statistics
+            self.column_listbox.bind("<<ListboxSelect>>", self.on_select)
+   
+    def on_select(self,event):
+        
+        # Get the index of the selected item
+        index = self.column_listbox.curselection()[0]
+        # Get the value of the selected item
+        selected_column = self.column_listbox.get(index)
+        # Update the label text to show the selected item
+        if selected_column:
+            summary = self.model.get_data_summary()
+            stats = summary[selected_column]
+            # Clear the existing display frame
+            # self.clear_display_frame()
+            
+            for widget in self.view.display_frame_right.winfo_children():
+                widget.destroy()
+            
+            # Display the statistics
+            row_index = 0
+            for stat_name, stat_value in stats.items():
+                label = tk.Label(self.view.display_frame_right, text=f"{stat_name}: {stat_value}")
+                label.grid(row=row_index, column=1, padx=5, pady=5)
+                row_index += 1
 
     def show_visualization(self):
         # self.plot_network_graph()
@@ -136,6 +142,7 @@ class MelbourneHousingController:
     def predict_prices(self):
         pass  # Add code for price prediction
 
+
     def compare_houses(self):
         selected_indices = self.view.house_listbox.curselection()
         if len(selected_indices) != 2:
@@ -152,7 +159,11 @@ class MelbourneHousingController:
                     value1_label.grid(row=i, column=1, padx=5, pady=5)
                     value2_label = tk.Label(comparison_window, text=value2)
                     value2_label.grid(row=i, column=2, padx=5, pady=5)
-
+                    
+    def run(self):
+        self.master.mainloop()
+        
+    
 def main():
     root = tk.Tk()
     app = MelbourneHousingController(root)
