@@ -67,3 +67,4 @@ class MelbourneHousingView:
     #         messagebox.showerror("Error", "Please select exactly two houses for comparison.")
     #     else:
     #         self.controller.compare_houses(selected_indices)
+    ##
