@@ -1,4 +1,5 @@
 import pandas as pd
+# from sklearn.linear_model import LinearRegression
 
 class MelbourneHousingModel:
     def __init__(self):
@@ -28,3 +29,24 @@ class MelbourneHousingModel:
             house1_details = self.data.iloc[house1_index]
             house2_details = self.data.iloc[house2_index]
             return house1_details, house2_details
+        
+    def create_histogram(self, column_name):
+        if self.data is not None:
+            return self.data[column_name].plot.hist()
+        else:
+            return None
+        
+    def create_scatter_plot(self, x_column, y_column):
+        if self.data is not None:
+            return self.data.plot.scatter(x=x_column, y=y_column)
+        else:
+            return None
+        
+    # def create_price_prediction_model(self):
+    #     if self.data is not None:
+    #         self.model = LinearRegression()
+    #         self.model.fit(self.data[['Rooms', 'Bathroom', 
+    #                                   'Landsize', 'BuildingArea', 
+    #                                   'YearBuilt']], self.data['Price'])
+    #     else:
+    #         return None

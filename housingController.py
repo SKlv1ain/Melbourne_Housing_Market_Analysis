@@ -2,6 +2,9 @@ import tkinter as tk
 import tkinter as tkinter
 from tkinter import filedialog, messagebox
 
+from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
+from matplotlib.figure import Figure
+
 import matplotlib.pyplot as plt
 import networkx as nx
 import pandas as pd
@@ -20,7 +23,7 @@ class MelbourneHousingController:
         self.view.stats_button.config(command=self.show_statistics)
         self.view.visualization_button.config(command=self.show_visualization)
         self.view.predict_button.config(command=self.predict_prices)
-        self.view.compare_button.config(command=self.compare_houses)
+        self.view.compare_button.config(command=self.compare_houses_button)
         self.view.quit_button.config(command=quit)
         
         self.histograms = {
@@ -40,7 +43,7 @@ class MelbourneHousingController:
             messagebox.showinfo("Success", "Data imported successfully!")
             label = tk.Label(self.view.menu_frame, text="Data imported", fg="green", bg="white")
             label.pack(pady=10)
-            self.view.set_house_data(self.model.get_housing_data())
+            # self.view.set_house_data(self.model.get_housing_data())
             
     def show_statistics(self):
         summary = self.model.get_data_summary()
@@ -119,7 +122,6 @@ class MelbourneHousingController:
         # Plot the selected histogram
         self.histograms[selected_histogram]()
     
-
     # Define the plot functions for each histogram
     def plot_price_vs_land_size(self):
         plt.figure(figsize=(8, 6))
@@ -179,26 +181,74 @@ class MelbourneHousingController:
         plt.show()
     
     def predict_prices(self):
-        pass  # keep it empty for now
+        
+        for widget in self.view.display_frame_left.winfo_children():
+                widget.destroy()  
+                
+        for widget in self.view.display_frame_right.winfo_children():
+                widget.destroy()   
+        messagebox.showerror("Error", "This feature is not implemented yet.")
+        label = tk.Label(self.view.display_frame_left, 
+                         text="This feature is not implemented yet.", 
+                         fg="white", bg="gray")
+        label.pack(fill=tk.BOTH, expand=True)
+        label2 = tk.Label(self.view.display_frame_right, 
+                         text="This feature is not implemented yet.", 
+                         fg="white", bg="gray")
+        label2.pack(fill=tk.BOTH, expand=True)
+    
+    def compare_houses_button(self):
+        
+        # Clear the display frame
+        for widget in self.view.display_frame_left.winfo_children():
+                widget.destroy()  
+        for widget in self.view.display_frame_right.winfo_children():
+                widget.destroy()  
+        
+        # # Remove the display frame right
+        # self.view.display_frame_right.pack_forget()
+        
+        # Create a listbox for selecting houses
+        self.house_listbox = tk.Listbox(self.view.display_frame_left
+                                        , selectmode=tk.MULTIPLE)
+        self.house_listbox.pack(fill=tk.BOTH, expand=True)
+        
+        # Create a listbox for selecting houses
+        label = tk.Label(self.view.display_frame_right, 
+                         text="The Comparison Result shows up in a new window.", 
+                         fg="white", bg="gray")
+        label.pack(fill=tk.BOTH, expand=True)
 
+        # Get the housing data for listbox
+        data = self.model.get_housing_data()
+        self.house_listbox.delete(0, tk.END)
+        for address in data:
+            self.house_listbox.insert(tk.END, address)
+        
+        # Create a button to compare houses
+        self.button = tk.Button(self.view.display_frame_left, text="Compare Houses")
+        self.button.pack(pady=10)
 
-    def compare_houses(self):
-        selected_indices = self.view.house_listbox.curselection()
+        self.button.bind("<Button-1>", self.compare_houses_event)
+        
+    def compare_houses_event(self, event):
+        selected_indices = self.house_listbox.curselection()
         if len(selected_indices) != 2:
             messagebox.showerror("Error", "Please select exactly two houses for comparison.")
         else:
             house1_details, house2_details = self.model.compare_houses(selected_indices)
             if house1_details is not None and house2_details is not None:
-                comparison_window = tk.Toplevel(self.master)
+                comparison_window = tk.Toplevel(self.view.display_frame_right)
                 comparison_window.title("Comparison Result")
-                for i, (attr, value1, value2) in enumerate(zip(house1_details.index, house1_details.values, house2_details.values)):
+                
+                for i, (attr, value1, value2) in enumerate(zip(house1_details.index
+                                    , house1_details.values, house2_details.values)):
                     label = tk.Label(comparison_window, text=attr)
                     label.grid(row=i, column=0, padx=5, pady=5)
                     value1_label = tk.Label(comparison_window, text=value1)
                     value1_label.grid(row=i, column=1, padx=5, pady=5)
                     value2_label = tk.Label(comparison_window, text=value2)
-                    value2_label.grid(row=i, column=2, padx=5, pady=5)
-                    
+                    value2_label.grid(row=i, column=2, padx=5, pady=5)          
                     
     def run(self):
         self.master.mainloop()
