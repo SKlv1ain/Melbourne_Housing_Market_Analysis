@@ -1,6 +1,6 @@
 import tkinter as tk
 import tkinter as tkinter
-from tkinter import filedialog, messagebox, ttk
+from tkinter import filedialog, messagebox
 
 import matplotlib.pyplot as plt
 import networkx as nx
@@ -94,9 +94,13 @@ class MelbourneHousingController:
         self.histogram_listbox = tk.Listbox(self.view.display_frame_left)
         self.histogram_listbox.pack(fill=tk.BOTH, expand=True)
         
+        # Clear the display frame
+        for widget in self.view.display_frame_right.winfo_children():
+            widget.destroy()
         # Create a Label massage
-        label = tk.Label(self.view.display_frame_right, text="The graph show in new window", fg="blue", bg="white")
-        label.grid(row=0, column=0, padx=5, pady=5)
+        label = tk.Label(self.view.display_frame_right, text="The graph shows up in a new window.", 
+                         fg="white", bg="gray")
+        label.pack(fill=tk.BOTH, expand=True)
         
         # Insert histogram names into the listbox
         for histogram_name in self.histograms.keys():
@@ -175,7 +179,7 @@ class MelbourneHousingController:
         plt.show()
     
     def predict_prices(self):
-        pass  # Add code for price prediction
+        pass  # keep it empty for now
 
 
     def compare_houses(self):
@@ -194,6 +198,7 @@ class MelbourneHousingController:
                     value1_label.grid(row=i, column=1, padx=5, pady=5)
                     value2_label = tk.Label(comparison_window, text=value2)
                     value2_label.grid(row=i, column=2, padx=5, pady=5)
+                    
                     
     def run(self):
         self.master.mainloop()

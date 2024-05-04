@@ -3,6 +3,7 @@ import pandas as pd
 class MelbourneHousingModel:
     def __init__(self):
         self.data = None
+        self.model = None
 
     def import_data(self, file_path):
         self.data = pd.read_csv(file_path)

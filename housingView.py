@@ -5,7 +5,7 @@ class MelbourneHousingView:
     def __init__(self, master):
         self.master = master
         self.master.title("Melbourne Housing Market Analysis")
-        self.master.geometry("750x400")
+        self.master.geometry("1000x600")
         
         self.main_frame = tk.Frame(master)
         self.main_frame.pack(fill=tk.BOTH, expand=True)
