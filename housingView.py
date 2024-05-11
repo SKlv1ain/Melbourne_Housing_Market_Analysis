@@ -1,10 +1,7 @@
 import tkinter as tk
 from tkinter import messagebox, ttk
 import matplotlib.pyplot as plt
-
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
-import random
-import seaborn as sns
 
 class MelbourneHousingView(tk.Tk):
     def __init__(self, controller):

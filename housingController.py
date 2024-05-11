@@ -1,11 +1,6 @@
 import housingModel as model
 import housingView as view
 
-from tkinter import messagebox
-from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
-import matplotlib.pyplot as plt
-import tkinter as tk
-
 class MelbourneHousingController:
     def __init__(self):
         self.model = model.MelbourneHousingModel()

@@ -3,9 +3,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import geopandas as gpd
 from shapely.geometry import Point
-
-
-from tkinter import filedialog, messagebox
+from tkinter import filedialog
 
 class MelbourneHousingModel:
     def __init__(self):
